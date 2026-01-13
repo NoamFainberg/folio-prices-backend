@@ -28,7 +28,7 @@ let reconnectTimer = null;
 // --- Helpers ---
 function buildWsUrl() {
   // Per Twelve Data docs: wss://ws.twelvedata.com/v1/quotes/price?apikey=your_api_key
-  return `wss://ws.twelvedata.com/v1/quotes/price?apikey=${API_KEY}`;
+  return `wss://ws.twelvedata.com/v1/quotes/price?apikey=${API_KEY}&prepost=true`;
 }
 
 function safeJsonParse(raw) {
@@ -104,9 +104,19 @@ function connect() {
 
     // Price events
     if (msg.event === "price" && msg.symbol && msg.price) {
+      const newPrice = Number(msg.price);
+      const prevPrice = priceStore[msg.symbol]?.price;
+      
+      let trend = "=";
+      if (prevPrice !== undefined) {
+        if (newPrice > prevPrice) trend = "+";
+        else if (newPrice < prevPrice) trend = "-";
+      }
+
       priceStore[msg.symbol] = {
-        price: Number(msg.price),
+        price: newPrice,
         ts: Number(msg.timestamp) || Date.now(),
+        trend: trend,
       };
       return;
     }
