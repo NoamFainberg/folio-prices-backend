@@ -12,7 +12,9 @@ A lightweight Node.js service that acts as a real-time price proxy and cache for
 
 ## Connection Guide
 
-The service runs by default on `http://localhost:3001` (or the `PORT` defined in your environment).
+The service is deployed at: **[https://folio-prices-backend.onrender.com](https://folio-prices-backend.onrender.com)**
+
+Alternatively, if running locally, it uses `http://localhost:3001` (or the `PORT` defined in your environment).
 
 ### 1. Fetching Latest Prices
 To get the latest cached prices for specific symbols.
